@@ -1,0 +1,26 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+config/.env
+
+# Runtime uploads and generated files
+Public/uploads/avatars/*
+!Public/uploads/avatars/.gitkeep
+Public/debug-upload.png
+debug-upload.png
+
+# Local debugging and one-off helper scripts
+debug_profile_upload.php
+generate_admin_hash.php
+
+# IDE and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and local database dumps
+*.log
+*.sql.bak
+*.dump
