@@ -1,27 +1,35 @@
-<?php require __DIR__ . '/../layouts/header.php'; ?>
+<?php
+$errorMessage = $errorMessage ?? '';
+require __DIR__ . '/../layouts/header.php';
+?>
 
-<div class="post-card" style="max-width: 450px; margin: 40px auto;">
-    <h2>Sign In</h2>
-    <br>
+<main class="auth-card">
+    <div class="auth-card-header">
+        <h2>Sign In</h2>
+        <p>Welcome back to Mini Blog</p>
+    </div>
 
     <?php if (!empty($errorMessage)): ?>
-        <div class="alert" style="background-color: #e74c3c; color: white;"><?= htmlspecialchars($errorMessage) ?></div>
+        <div class="alert alert-error"><?= htmlspecialchars($errorMessage) ?></div>
     <?php endif; ?>
 
-    <form method="POST" action="<?= htmlspecialchars($publicUrl) ?>/index.php?page=login">
-        <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" required placeholder="user@example.com" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;">
+    <form class="auth-form" method="POST" action="<?= htmlspecialchars($publicUrl) ?>/index.php?page=login">
+        <div class="auth-field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required placeholder="user@example.com">
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required placeholder="••••••••" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;">
+        <div class="auth-field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
 
-        <button type="submit" name="submit_login" class="btn" style="width: 100%;">Sign In</button>
+        <button type="submit" name="submit_login" class="btn">Sign In</button>
     </form>
 
-    <br>
-    <p style="font-size: 0.9rem; text-align: center;">
+    <p class="auth-switch">
         Don't have an account? <a href="<?= htmlspecialchars($publicUrl) ?>/index.php?page=register">Sign up here</a>.
     </p>
-</div>
+</main>
 
 <?php require __DIR__ . '/../layouts/footer.php'; ?>

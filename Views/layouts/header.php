@@ -19,7 +19,7 @@ if ($publicUrl === '.' || $publicUrl === '') {
             <a href="<?= htmlspecialchars($publicUrl) ?>/index.php">Home</a>
 
             <?php if (isset($_SESSION['user_id'])): ?>
-                <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                <?php if (in_array($_SESSION['user_role'], ['admin', 'editor'], true)): ?>
                     <a href="<?= htmlspecialchars($publicUrl) ?>/index.php?page=admin">Admin Panel</a>
                 <?php endif; ?>
 

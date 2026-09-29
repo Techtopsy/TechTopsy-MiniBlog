@@ -6,9 +6,11 @@ $currentUser = $user ?? [
 require __DIR__ . '/../layouts/header.php';
 ?>
 
-<div class="post-card" style="max-width: 500px; margin: 40px auto;">
-    <h2>Profile</h2>
-    <br>
+<main class="profile-card">
+    <div class="profile-card-header">
+        <h2>Profile</h2>
+        <p>Update your profile picture</p>
+    </div>
 
     <?php if (!empty($errorMessage)): ?>
         <div class="alert" style="background-color: #e74c3c; color: white;">
@@ -22,28 +24,27 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     <?php endif; ?>
 
-    <div style="text-align: center; margin-bottom: 20px;">
+    <div class="profile-avatar-preview">
         <?php if (!empty($currentUser['profile_pic'])): ?>
             <img src="<?= htmlspecialchars($publicUrl) ?>/uploads/avatars/<?= htmlspecialchars($currentUser['profile_pic']) ?>"
                  class="avatar-lg" alt="Profile picture">
         <?php else: ?>
-            <div class="avatar-lg avatar-placeholder" style="margin: 0 auto;">
+            <div class="avatar-lg avatar-placeholder">
                 <?= strtoupper(substr($currentUser['username'], 0, 1)) ?>
             </div>
         <?php endif; ?>
     </div>
 
-    <form method="POST" enctype="multipart/form-data" action="<?= htmlspecialchars($publicUrl) ?>/index.php?page=profile">
-        <label for="avatar">Choose profile picture:</label>
-        <input type="file" id="avatar" name="avatar" accept="image/png,image/jpeg,image/webp" required style="width: 100%; margin-bottom: 15px;">
+    <form class="profile-form" method="POST" enctype="multipart/form-data" action="<?= htmlspecialchars($publicUrl) ?>/index.php?page=profile">
+        <label for="avatar">Choose profile picture</label>
+        <input type="file" id="avatar" name="avatar" accept="image/png,image/jpeg,image/webp" required>
 
-        <button type="submit" name="upload_avatar" class="btn" style="width: 100%;">Upload Picture</button>
+        <button type="submit" name="upload_avatar" class="btn">Upload Picture</button>
     </form>
 
-    <br>
-    <p style="font-size: 0.9rem; text-align: center;">
+    <p class="profile-back-link">
         <a href="<?= htmlspecialchars($publicUrl) ?>/index.php">Back to Home</a>
     </p>
-</div>
+</main>
 
 <?php require __DIR__ . '/../layouts/footer.php'; ?>
