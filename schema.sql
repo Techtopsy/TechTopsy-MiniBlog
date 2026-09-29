@@ -16,11 +16,11 @@ INSERT INTO users (username, email, password_hash, role)
 VALUES (
     'Admin',
     'admin@blog.com',
-    '$2y$12$UgiNRJFVwrsnQHKM8kat5OrHAIeDUfFBj8FP0boZTdgIQQITuBsou',
+    '',
     'admin'
 )
 ON DUPLICATE KEY UPDATE
-    password_hash = '$2y$12$UgiNRJFVwrsnQHKM8kat5OrHAIeDUfFBj8FP0boZTdgIQQITuBsou',
+    password_hash = '',
     role = 'admin';
 
 -- Posts Table
