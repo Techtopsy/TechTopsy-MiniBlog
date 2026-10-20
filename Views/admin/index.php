@@ -74,6 +74,10 @@ require __DIR__ . '/../layouts/header.php';
                 <input type="checkbox" id="edit_is_featured" name="is_featured" value="1" <?= !empty($editingPost['is_featured']) ? 'checked' : '' ?>>
                 <label for="edit_is_featured">Feature this post on home banner</label>
             </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="edit_is_premium" name="is_premium" value="1" <?= !empty($editingPost['is_premium']) ? 'checked' : '' ?>>
+                <label for="edit_is_premium">Classified (Premium Subscription Required)</label>
+            </div>
             <button type="submit" name="update_post" class="btn">Save Changes</button>
         </form>
     </div>
@@ -127,6 +131,11 @@ require __DIR__ . '/../layouts/header.php';
             <div class="form-group checkbox-group">
                 <input type="checkbox" id="is_featured" name="is_featured" value="1">
                 <label for="is_featured">Feature this post on home banner</label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="is_premium" name="is_premium" value="1">
+                <label for="is_premium">Mark as Classified (Premium Subscription Required)</label>
             </div>
 
             <button type="submit" name="create_post" class="btn">Publish / Schedule Post</button>

@@ -3,6 +3,8 @@ $post = $post ?? [];
 $hasLiked = $hasLiked ?? false;
 $likeCount = $likeCount ?? 0;
 $comments = $comments ?? [];
+$canInteract = $canInteract ?? (isset($_SESSION['user_id']) && ($post['status'] ?? '') === 'published');
+$interactionError = $interactionError ?? '';
 
 require __DIR__ . '/../layouts/header.php';
 ?>
@@ -31,12 +33,16 @@ require __DIR__ . '/../layouts/header.php';
                 </div>
 
                 <div class="like-section">
-                    <form method="POST">
-                        <input type="hidden" name="action" value="like">
-                        <button type="submit" class="btn <?= $hasLiked ? 'btn-danger' : '' ?>">
-                            <?= $hasLiked ? '❤️ Unlike' : '🤍 Like' ?> (<?= $likeCount ?>)
-                        </button>
-                    </form>
+                    <?php if ($canInteract): ?>
+                        <form method="POST">
+                            <input type="hidden" name="action" value="like">
+                            <button type="submit" class="btn <?= $hasLiked ? 'btn-danger' : '' ?>">
+                                <?= $hasLiked ? '❤️ Unlike' : '🤍 Like' ?> (<?= $likeCount ?>)
+                            </button>
+                        </form>
+                    <?php elseif (!isset($_SESSION['user_id'])): ?>
+                        <p><a href="?page=login">Sign in</a> to like this post.</p>
+                    <?php endif; ?>
                 </div>
 
                 <section class="comments-section">
@@ -46,19 +52,22 @@ require __DIR__ . '/../layouts/header.php';
                         <div class="alert alert-success">Comment added successfully!</div>
                     <?php endif; ?>
 
-                    <form class="comment-form" method="POST">
-                        <div class="comment-field">
-                            <label for="author">Your Name</label>
-                            <input type="text" id="author" name="author" required placeholder="Jane Doe">
-                        </div>
+                    <?php if (!empty($interactionError)): ?>
+                        <div class="alert alert-error"><?= htmlspecialchars($interactionError) ?></div>
+                    <?php endif; ?>
 
-                        <div class="comment-field">
-                            <label for="comment">Your Comment</label>
-                            <textarea id="comment" name="comment" required placeholder="Write a comment..."></textarea>
-                        </div>
+                    <?php if ($canInteract): ?>
+                        <form class="comment-form" method="POST">
+                            <div class="comment-field">
+                                <label for="comment">Your Comment</label>
+                                <textarea id="comment" name="comment" required placeholder="Write a comment..."></textarea>
+                            </div>
 
-                        <button type="submit" name="submit_comment" class="btn">Submit Comment</button>
-                    </form>
+                            <button type="submit" name="submit_comment" class="btn">Submit Comment</button>
+                        </form>
+                    <?php elseif (!isset($_SESSION['user_id'])): ?>
+                        <p><a href="?page=login">Sign in</a> to leave a comment.</p>
+                    <?php endif; ?>
 
                     <div class="comment-list">
                         <?php if (empty($comments)): ?>

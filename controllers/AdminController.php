@@ -43,6 +43,7 @@ class AdminController {
                 $status = (string) ($_POST['status'] ?? 'published');
                 $showAuthor = isset($_POST['show_author']) ? 1 : 0;
                 $isFeatured = isset($_POST['is_featured']) ? 1 : 0;
+                $isPremium = isset($_POST['is_premium']) ? 1 : 0;
                 $publishedAt = !empty($_POST['published_at']) ? (string) $_POST['published_at'] : null;
 
                 if ($postId < 1 || $title === '' || $content === '') {
@@ -58,7 +59,7 @@ class AdminController {
                     $imageFilename = $this->uploadPostImage($_FILES['post_image']);
                 }
 
-                $this->postModel->update($postId, $title, $content, $imageFilename, $isFeatured, $status, $showAuthor, $publishedAt);
+                $this->postModel->update($postId, $title, $content, $imageFilename, $isFeatured, $status, $showAuthor, $publishedAt, $isPremium);
                 header("Location: index.php?page=admin&updated=1");
                 exit;
             } catch (Exception $e) {
@@ -73,6 +74,7 @@ class AdminController {
                 $title = trim((string) $_POST['title']);
                 $content = $this->sanitizeArticleContent((string) ($_POST['content'] ?? ''));
                 $isFeatured = isset($_POST['is_featured']) ? 1 : 0;
+                $isPremium = isset($_POST['is_premium']) ? 1 : 0;
                 $status = (string) ($_POST['status'] ?? 'published');
                 $showAuthor = isset($_POST['show_author']) ? 1 : 0;
                 $publishedAt = !empty($_POST['published_at']) ? (string) $_POST['published_at'] : null;
@@ -96,7 +98,8 @@ class AdminController {
                     $isFeatured, 
                     $status, 
                     $showAuthor, 
-                    $publishedAt
+                    $publishedAt,
+                    $isPremium
                 );
 
                 $message = "Post created successfully!";

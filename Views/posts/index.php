@@ -61,8 +61,12 @@ require __DIR__ . '/../layouts/header.php';
                                 <?php endif; ?>
                                 <span><?= date('M d, Y', strtotime($post['published_at'])) ?></span>
                             </div>
-                            <?php $postSnippet = trim(strip_tags($post['content'])); ?>
-                            <p class="post-snippet"><?= htmlspecialchars(substr($postSnippet, 0, 120)) ?>...</p>
+                            <?php if (!empty($post['is_premium'])): ?>
+                                <p class="post-snippet">Classified report. Premium subscription required.</p>
+                            <?php else: ?>
+                                <?php $postSnippet = trim(strip_tags($post['content'])); ?>
+                                <p class="post-snippet"><?= htmlspecialchars(substr($postSnippet, 0, 120)) ?>...</p>
+                            <?php endif; ?>
                             <a href="index.php?page=post&id=<?= $post['id'] ?>" class="btn">Read Article</a>
                         </div>
                     </article>

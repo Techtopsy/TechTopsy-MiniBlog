@@ -20,7 +20,6 @@ VALUES (
     'admin'
 )
 ON DUPLICATE KEY UPDATE
-    password_hash = '',
     role = 'admin';
 
 -- Posts Table
@@ -31,6 +30,7 @@ CREATE TABLE IF NOT EXISTS posts (
     author_id INT NULL,
     image VARCHAR(255) DEFAULT NULL,
     is_featured TINYINT(1) DEFAULT 0,
+    is_premium TINYINT(1) DEFAULT 0,
     status ENUM('published', 'draft', 'hidden') DEFAULT 'published',
     show_author TINYINT(1) DEFAULT 1,
     published_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -67,6 +67,21 @@ CREATE TABLE IF NOT EXISTS ads (
     target_url VARCHAR(255) NOT NULL,
     is_active TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Mark posts as premium (classified) or free
+ALTER TABLE posts ADD COLUMN IF NOT EXISTS is_premium TINYINT(1) DEFAULT 0;
+
+-- Subscriptions Table to track active Paystack subscriptions
+CREATE TABLE IF NOT EXISTS subscriptions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    reference VARCHAR(100) NOT NULL UNIQUE,
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Create an account through the application, then set its role to admin:

@@ -17,6 +17,7 @@ if ($publicUrl === '.' || $publicUrl === '') {
         <h1><a href="<?= htmlspecialchars($publicUrl) ?>/index.php">Mini Blog</a></h1>
         <nav>
             <a href="<?= htmlspecialchars($publicUrl) ?>/index.php">Home</a>
+            <a href="<?= htmlspecialchars($publicUrl) ?>/index.php?page=classified">Classified</a>
 
             <?php if (isset($_SESSION['user_id'])): ?>
                 <?php if (in_array($_SESSION['user_role'], ['admin', 'editor'], true)): ?>

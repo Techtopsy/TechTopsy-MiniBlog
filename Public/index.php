@@ -10,11 +10,28 @@ require_once __DIR__ . '/../controllers/PostController.php';
 require_once __DIR__ . '/../controllers/AdminController.php';
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/ProfileController.php';
+require_once __DIR__ . '/../controllers/SubscriptionController.php';
 
 $page = (string) ($_GET['page'] ?? 'home');
 
 try {
     switch ($page) {
+
+        case 'pricing':
+            $subController = new SubscriptionController();
+            $subController->pricing();
+            break;
+
+        case 'subscribe':
+            $subController = new SubscriptionController();
+            $subController->initialize();
+            break;
+
+        case 'verify_payment':
+            $subController = new SubscriptionController();
+            $subController->verify();
+            break;
+
         case 'login':
             $authController = new AuthController();
             $authController->login();
@@ -33,6 +50,11 @@ try {
         case 'post':
             $controller = new PostController();
             $controller->show();
+            break;
+
+        case 'classified':
+            $controller = new PostController();
+            $controller->classified();
             break;
 
         case 'admin':

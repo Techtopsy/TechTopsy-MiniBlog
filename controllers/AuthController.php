@@ -80,6 +80,7 @@ class AuthController {
 
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['email'] = $user['email'];
                 $_SESSION['user_role'] = $user['role'];
                 $_SESSION['profile_pic'] = $user['profile_pic'] ?? null;
 

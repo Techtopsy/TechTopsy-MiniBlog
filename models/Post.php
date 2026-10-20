@@ -61,9 +61,23 @@ class Post {
         }
     }
 
-    public function create(string $title, string $content, int $authorId, ?string $image, int $isFeatured, string $status, int $showAuthor, ?string $publishedAt): bool {
+    public function getPremiumPublished(): array {
         try {
-            $stmt = $this->db->prepare("INSERT INTO posts (title, content, author_id, image, is_featured, status, show_author, published_at) VALUES (:title, :content, :author_id, :image, :is_featured, :status, :show_author, :published_at)");
+            $stmt = $this->db->query("
+                SELECT p.*, u.username AS author_name
+                FROM posts p
+                LEFT JOIN users u ON p.author_id = u.id
+                WHERE p.is_premium = 1 AND p.status = 'published' AND p.published_at <= NOW()
+                ORDER BY p.published_at DESC");
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    public function create(string $title, string $content, int $authorId, ?string $image, int $isFeatured, string $status, int $showAuthor, ?string $publishedAt, int $isPremium): bool {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO posts (title, content, author_id, image, is_featured, status, show_author, published_at, is_premium) VALUES (:title, :content, :author_id, :image, :is_featured, :status, :show_author, :published_at, :is_premium)");
             return $stmt->execute([
                 ':title' => $title,
                 ':content' => $content,
@@ -73,6 +87,7 @@ class Post {
                 ':status' => $status,
                 ':show_author' => $showAuthor,
                 ':published_at' => $publishedAt ?: date('Y-m-d H:i:s'),
+                ':is_premium' => $isPremium,
             ]);
         } catch (PDOException $e) {
             error_log("Database Error [Post::create]: " . $e->getMessage());
@@ -80,9 +95,9 @@ class Post {
         }
     }
 
-    public function update(int $id, string $title, string $content, ?string $image, int $isFeatured, string $status, int $showAuthor, ?string $publishedAt): bool {
+    public function update(int $id, string $title, string $content, ?string $image, int $isFeatured, string $status, int $showAuthor, ?string $publishedAt, int $isPremium): bool {
         try {
-            $sql = "UPDATE posts SET title = :title, content = :content, image = COALESCE(:image, image), is_featured = :is_featured, status = :status, show_author = :show_author, published_at = :published_at WHERE id = :id";
+            $sql = "UPDATE posts SET title = :title, content = :content, image = COALESCE(:image, image), is_featured = :is_featured, status = :status, show_author = :show_author, published_at = :published_at, is_premium = :is_premium WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':id' => $id,
@@ -93,6 +108,7 @@ class Post {
                 ':status' => $status,
                 ':show_author' => $showAuthor,
                 ':published_at' => $publishedAt ?: date('Y-m-d H:i:s'),
+                ':is_premium' => $isPremium,
             ]);
         } catch (PDOException $e) {
             error_log("Database Error [Post::update]: " . $e->getMessage());
